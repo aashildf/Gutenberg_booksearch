@@ -3,6 +3,7 @@ import { AppBar, Toolbar, Typography, InputBase, Button, Box} from '@mui/materia
 import { Link } from 'react-router-dom';    
 import SearchIcon from '@mui/icons-material/Search';
 import {styled, alpha} from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -45,6 +46,16 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Navbar() {
+const navigate = useNavigate();
+
+const handleSearch = (event) => {
+    if (event.key === "Enter") {
+        const searchTerm = event.target.value;
+        navigate(`/?search=${searchTerm}`);
+    }
+};
+
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -52,11 +63,10 @@ export default function Navbar() {
           <Typography
             variant="h6"
             noWrap
-            component={Link} // Gjør logoen til en lenke til forsiden
-            to="/"
+            component={Link} to="/"
             sx={{
               flexGrow: 1,
-              display: { xs: "none", sm: "block" },
+              display: { xs: "block", sm: "block" },
               textDecoration: "none",
               color: "white",
             }}
@@ -71,6 +81,7 @@ export default function Navbar() {
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Søk på bok…"
+              onKeyDown={handleSearch}
               inputProps={{ "aria-label": "search" }}
             />
           </Search>
