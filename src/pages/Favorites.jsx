@@ -17,8 +17,8 @@ const refreshFavorites = () => {
 };
 
     return (
-      <Container maxWidth="lg" sx={{ py: 4 }}>
-        <Typography variant="h4" gutterBottom sx={{ fontWeight: "bold" }}>
+      <Container maxWidth="xl" sx={{ py: 4 }}>
+        <Typography variant="h4" sx={{ fontWeight: "bold", mb: 4 }}>
           Mine favoritter
         </Typography>
 
@@ -29,17 +29,32 @@ const refreshFavorites = () => {
             </Typography>
           </Box>
         ) : (
-          <Grid container spacing={4} alignItems="stretch">
-            {favorites.map((book) => (
-              <Grid
-                item
-                key={book.id}
-                xs={12}
-                sm={6}
-                md={4}
-                lg={3}
-                sx={{ display: "flex" }}
+          <Grid 
+          container 
+                sx={{
+            width: "100%", 
+            margin: 0, 
+            display: "flex", 
+            flexWrap: "wrap",
+            // Bruker flex-start her så kortene legger seg pent til venstre 
+            // hvis du f.eks. bare har 2 favoritter
+            justifyContent: "flex-start" 
+          }}
               >
+                {favorites.map((book) => (
+                    <Grid
+                    item
+                    key={book.id}
+                    sx={{
+                        display: "flex",
+                        minWidth: 0,
+                        // Tvinger 4 kort på stor skjerm, 3 på medium, 2 på tablet og 1 på mobil
+                flexBasis: { lg: "25%", md: "33.33%", sm: "50%", xs: "100%" },
+                maxWidth: { lg: "25%", md: "33.33%", sm: "50%", xs: "100%" },
+                p: 1.5, // Dette lager mellomrommet (erstatter spacing={4})
+              }}
+              >
+               
                 {/* vi sender refreshFavorites som prop til BookCard */}
                 <BookCard book={book} onFavoriteToggle={refreshFavorites} />
               </Grid>

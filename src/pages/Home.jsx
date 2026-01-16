@@ -29,36 +29,32 @@ const Home = () => {
 
     return (
       <Container maxWidth={"xl"} sx={{ py: 4 }}>
-        <Typography
-          variant="h4"
-          gutterBottom
-          sx={{ fontWeight: "bold", mb: 4 }}
-        >
+        <Typography variant="h4" sx={{ fontWeight: "bold", mb: 4 }}>
           {searchParams ? "Søkeresultater" : "Populære bøker"}
         </Typography>
 
         <Grid
           container
-          spacing={4}
-          justifyContent="center" // Viktig for lik høyde
-          alignItems="stretch"
+          sx={{
+            margin: 0, // Sentrerer selve grid-beholderen
+            width: "100%",
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+          }}
         >
           {data?.results?.map((book) => (
             <Grid
               item
               key={book.id}
-              xs={12}
-              sm={6}
-              md={3}
-              lg={3}
               sx={{
                 display: "flex",
-                minWidth: 0, // Veldig viktig
-                flexBasis: { md: "25%", sm: "50%", xs: "100%" },
-                maxWidth: { md: "25%", sm: "50%", xs: "100%" },
+                minWidth: 0,
+                flexBasis: { lg: "25%", md: "33.33%", sm: "50%", xs: "100%" },
+                maxWidth: { lg: "25%", md: "33.33%", sm: "50%", xs: "100%" },
+                p: 1.5, // Dette skaper "spacing" inni rutenettet uten å ødelegge bredden
               }}
             >
-              {/* xs-(mobil) betyr at en bok tar hele plassen 12/12, sm-(nettbrett) 6/12, altså to bøker ved siden av hverandre, osv.*/}
               <BookCard book={book} />
             </Grid>
           ))}
