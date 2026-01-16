@@ -26,10 +26,7 @@ function App() {
       <Navbar />
 
       {/* Her inne byttes innholdet ut basert på URL-en */}
-      <Box
-        component="main"
-        sx={{ width: "100%", py: 3, display: "flex", justifyContent: "center" }}
-      >
+      <Box component="main" sx={{ width: "100vw", flexGrow: 1 }}>
         <Routes>
           {/* Dette er forsiden. Når du laster siden vises Home */}
           <Route path="/" element={<Home />} />

@@ -1,8 +1,22 @@
 
-/* src/App.css */
 #root {
   width: 100%;
-  margin: 0;
-  padding: 0;
-  display: block; /* Viktig: Vite setter ofte denne til flex, som drar ting til venstre/midt */
+}
+
+*{
+  box-sizing: border-box;
+}
+
+/* tvinger rutenett til å bruke hele bredden */
+.MuiGrid-container {
+ width: 100% !important;
+ margin: 0 !important;
+ display: flex !important;
+ flex-wrap: wrap !important ;
+}
+
+/* sørger for at hver Grid-item følger kolonnebredden */
+.MuiGrid-container{
+  display: flex !important;
+  justify-content: stretch !important;
 }
