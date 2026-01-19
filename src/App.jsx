@@ -15,8 +15,9 @@ function App() {
       sx={{
         minHeight: "100vh",
         bgcolor: "#f9f9f9",
+        display: "flex",
+        flexDirection: "column",
         width: "100%",
-        display: "block",
       }}
     >
       <CssBaseline />
@@ -26,12 +27,13 @@ function App() {
       <Navbar />
 
       {/* Her inne byttes innholdet ut basert på URL-en */}
-      <Box component="main" sx={{ width: "100vw", flexGrow: 1 }}>
+      <Box component="main" sx={{ width: "100%", flexGrow: 1, pb: 5 }}>
         <Routes>
           {/* Dette er forsiden. Når du laster siden vises Home */}
           <Route path="/" element={<Home />} />
 
           {/* Andre ruter */}
+          <Route path="/" element={<Home />} />
           <Route path="/category/:genre" element={<Category />} />
           <Route path="/book/:id" element={<BookDetails />} />
           <Route path="/favorites" element={<Favorites />} />

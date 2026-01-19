@@ -1,22 +1,32 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import {useQuery} from '@tanstack/react-query';
 import {fetchBooks} from '../api.js';
-import {Grid, Container, CircularProgress, Typography, Box} from "@mui/material";
+import {Grid, Container, CircularProgress, Button, Typography, Box} from "@mui/material";
 import BookCard from '../components/BookCard.jsx';
 
 const Category = () => {
     const {genre} = useParams();
+    const [searchParams, setSearchcParams] = useSearchParams();
 
+    // Hent sidetall fra URL, standard er 1.
+    const page = parseInt(searchParams.get("page") || "1");
+
+    // Hent bøker basert på kategori
     const {data, isLoading, error} = useQuery({
-    queryKey: ["books", genre],
-    queryFn: () => fetchBooks(`?topic=${genre}`),
+    queryKey: ["category", genre, page],
+    queryFn: () => fetchBooks({topic: genre, page: page}),
+    keepPreviousData: true,
 });
+
+const handlePageChange = (newPage) => {
+    setSearchcParams({ page: newPage.toString()});
+    window.scrollTo(0, 0); // Scroll til toppen av siden ved sidebytte.
+};
 
 if (isLoading) {
     return (
       <Box display="flex" justifyContent="center" mt={10}>
-        
         <CircularProgress />
       </Box>
     );
@@ -25,18 +35,62 @@ if (isLoading) {
 if (error) return <Typography color="error">Kunne ikke hente bøker for {genre}</Typography>;
 
 return (
-  <Container>
-    <Typography variant="h4" gutterBottom sx={{ textTransform: "capitalize" }}>
+  <Container maxWidth="xl" sx={{ py: 4 }}>
+    <Typography
+      variant="h4"
+      sx={{ fontWeight: "bold", mb: 4, textTransform: "capitalize" }}
+    >
       Kategori:{genre}
     </Typography>
 
-    <Grid container spacing={4}>
-        {data?.results?.map((book) => (
-        <Grid item key={book.id} xs={12} sm={6} md={4} lg={3}>
-            <BookCard book={book}/>
+    <Grid
+      container
+      sx={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
+    >
+      {data?.results?.map((book) => (
+        <Grid
+          item
+          key={book.id}
+          sx={{
+            display: "flex",
+            flexBasis: { lg: "25%", md: "33.33%", sm: "50%", xs: "100%" },
+            maxWidth: { lg: "25%", md: "33.33%", sm: "50%", xs: "100%" },
+            p: 1.5,
+          }}
+        >
+          <BookCard book={book} />
         </Grid>
-    ))}
+      ))}
     </Grid>
+
+    {/* Paginering for kategori */}
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        mt: 6,
+        gap: 3,
+      }}
+    >
+      <Button
+        variant="contained"
+        diabled={page === 1}
+        onClick={() => handlePageChange(page - 1)}
+        sx={{ minWidth: "120px" }}
+      >
+        Forrige
+      </Button>
+      <Typography sx={{ fontWeight: "bold" }}>Side {page}</Typography>
+      <Button
+        variant="contained"
+        disabled={!data?.next}
+        onClick={() => handlePageChange(page + 1)}
+        sx={{ minWidth: "120px" }}
+      >
+        Neste
+      </Button>
+    </Box>
   </Container>
 );
 

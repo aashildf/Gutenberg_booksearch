@@ -1,21 +1,29 @@
 import React from 'react';
 import { useQuery } from "@tanstack/react-query";
-import {useLocation} from "react-router-dom";
+import { useSearchParams } from 'react-router-dom';
 import {fetchBooks} from "../api.js";
-import {Grid, Container, CircularProgress, Typography, Box} from "@mui/material";
+import {Grid, Container, CircularProgress, Typography, Box, Button} from "@mui/material";
 import BookCard from "../components/BookCard.jsx";
 
 const Home = () => {
-    const location = useLocation();
+    const [searchParams, setSearchParams] = useSearchParams();
 
-    // vi henter søkeordet fra uRL-en
-    const searchParams = location.search;
+    // hente ut verdiene individuelt fra URL-en
+    const query = searchParams.get("search") || "";
+    const page = parseInt(searchParams.get("page") || "1");
+
 
     const { data, isLoading, error} = useQuery({
-        // queryen oppdateres hver gang søket endres.
-        queryKey:["books", searchParams],
-        queryFn: () => fetchBooks(searchParams),
+        // queryen skiller mellom søkeord og sidetall
+        queryKey:["books", query, page],
+        queryFn: () => fetchBooks({search: query, page: page}),
+        keepPreviousData: true, // beholder bildene på skjermen mens ny data hentes
     });
+
+    // Funksjon for å bytte side
+    const handlePageChange = (newPage) => {
+        setSearchParams({ search: query, page: newPage.toString()  });
+    };
 
     if (isLoading) {
         return (
@@ -59,6 +67,41 @@ const Home = () => {
             </Grid>
           ))}
         </Grid>
+
+        {/* Navigasjonsknapper for sidebytte */}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            mt: 6,
+            mb: 4,
+            gap: 3,
+          }}
+        >
+          <Button
+            variant="contained"
+            didabled={page === 1}
+            onClick={() => handlePageChange(page - 1)}
+            sx={{ minWidth: "120px" }}
+          >
+            Forrige
+          </Button>
+
+          <Typography
+            sx={{ fontWeight: "bold", minWidth: "60px", textAlign: "center" }}
+          >Side {page}
+          </Typography>
+
+          <Button
+            variant="contained"
+            diabled={!data?.next}
+            onClick={() => handlePageChange(page + 1)}
+            sx={{ minWidth: "120px" }}  
+          >
+            Neste
+          </Button>
+        </Box>
       </Container>
     );
 };

@@ -1,24 +1,27 @@
 import * as React from 'react';
 import { AppBar, Toolbar, Typography, InputBase, Button, Box} from '@mui/material';
-import { Link } from 'react-router-dom';    
+import { Link, useNavigate } from 'react-router-dom';    
 import SearchIcon from '@mui/icons-material/Search';
 import {styled, alpha} from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
-
 
 
 // navbar hentet fra MUI: https://mui.com
 
+// kategori: https://mui.com/material-ui/react-app-bar/#app-bar-with-a-primary-search-field
 
+const categories = [
+    "Fiction", "Mystery", "Thriller", "Romance", "Fantasy", "Morality", "Society", "Power", "Justice", "Adventure", "Tragedy", "War", "Philosophy"
+];
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.common.white, 0.15),
   "&:hover": { backgroundColor: alpha(theme.palette.common.white, 0.25) },
-  marginLeft: 0,
+  marginLeft: theme.spacing(2),
+  marginRight: theme.spacing(2),
   width: "100%",
-  [theme.breakpoints.up("sm")]: { marginLeft: theme.spacing(1), width: "auto" },
+  [theme.breakpoints.up("sm")]: {"width" : "auto"},
 }));
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
@@ -51,7 +54,8 @@ const navigate = useNavigate();
 const handleSearch = (event) => {
     if (event.key === "Enter") {
         const searchTerm = event.target.value;
-        navigate(`/?search=${searchTerm}`);
+        // navigerer til hjemmesiden med søkeparameter
+        navigate(`/?search=${searchTerm}&page=1`);// &page=1 gjør at søket alltid starter på side en.
     }
 };
 
@@ -59,6 +63,7 @@ const handleSearch = (event) => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
+        {/* Hovedlinje: Logo, Søk og Favoritter */}
         <Toolbar>
           <Typography
             variant="h6"
@@ -66,9 +71,10 @@ const handleSearch = (event) => {
             component={Link} to="/"
             sx={{
               flexGrow: 1,
-              display: { xs: "block", sm: "block" },
+            //   display: { xs: "block", sm: "block" },
               textDecoration: "none",
               color: "white",
+              fontWeight: "bold",
             }}
           >
             BOK-APP
@@ -90,6 +96,32 @@ const handleSearch = (event) => {
           <Button color="inherit" component={Link} to="/favorites">
             Favoritter
           </Button>
+        </Toolbar>
+
+{/* kategori-linje */}
+<Toolbar
+variant="dense" //litt smalere
+sx={{ 
+            backgroundColor: alpha("#000", 0.1), 
+            display: "flex", 
+            flexWrap: "wrap", //wrapper på små skjermer
+            justifyContent: "center",
+            py: 1,
+            gap: 1
+          }}
+          >
+            {categories.map((cat) => (
+                <Button
+                key={cat}
+                size="small"
+                color="inherit"
+                component={Link}
+                to={`/category/${cat.toLowerCase()}`}
+                sx={{ fontSize: "0.75rem", textTransform: "capitalize"}}
+                >
+                    {cat}  
+                </Button>
+            ))}
         </Toolbar>
       </AppBar>
     </Box>
