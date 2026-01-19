@@ -9,4 +9,10 @@ export const fetchBooks = async (searchParams = "") => {
     return response.data;   
 };
 
+export const fetchBookDetails = async (id) => {
+    // denne funksjonen henter detaljer for en spesifikk bok basert på ID.
+    const response = await axios.get (`${API_URL}${id}`);
+    return response.data;
+}
+
 // Denne siden håndterer all kommunikasjonn med API-et ved hjelp av axios.
