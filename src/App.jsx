@@ -1,15 +1,41 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
-import { Box, CssBaseline } from "@mui/material";
+import { Box, CssBaseline, Fab, Zoom } from "@mui/material";
 import Home from "./pages/Home.jsx";
 import Category from "./pages/Category.jsx";
 import BookDetails from "./pages/BookDetails.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Favorites from "./pages/Favorites.jsx";
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+
 
 
 function App() {
+const [showButton, setShowButton] = useState(false);
+
+// Lytt til scroll-eventer for å vise/skjule "scroll to top"-knappen
+useEffect(() => {
+  const handleScroll = () => {
+    if (window.scrollY > 300) {
+      setShowButton(true);
+    } else {
+      setShowButton(false);
+    }
+  };
+
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, [] );
+
+const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+};
+
+
   return (
     <Box
       sx={{
@@ -17,7 +43,6 @@ function App() {
         bgcolor: "#f9f9f9",
         display: "flex",
         flexDirection: "column",
-        width: "100%",
       }}
     >
       <CssBaseline />
@@ -41,6 +66,23 @@ function App() {
           <Route path="*" element={<Home />} />
         </Routes>
       </Box>
+
+      {/* til toppen-knappen */}
+      <Zoom in={showButton}>
+        <Fab
+          color="primary"
+          size="small"
+          onClick={scrollToTop}
+          sx={{
+            position: "fixed",
+            bottom: 32,
+            right: 32,
+          }}
+          aria-label="scroll back to top"
+        >
+          <KeyboardArrowUpIcon />
+        </Fab>
+      </Zoom>
     </Box>
   );
 }
