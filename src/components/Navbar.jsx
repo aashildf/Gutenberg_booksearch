@@ -1,129 +1,223 @@
-import * as React from 'react';
-import { AppBar, Toolbar, Typography, InputBase, Button, Box} from '@mui/material';
+// NOTATER OM NAVBAR:
+// 1-Bruker "Drawer" for en semintransparent meny som glir ut.
+// 2. Inneholder søkefelt som sender brukeren til forsiden med søkeparametrene.
+// 3. "OnMouseEnter" på gategorier bytter bilde på høyre side av menyen.
+// navbar hentet fra MUI: https://mui.com
+
+
+// IMPORTS
+import {useState} from 'react';
+import { AppBar, Toolbar, Typography, IconButton, Drawer, List, ListItem, ListItemText, InputBase, Box, Divider} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 import { Link, useNavigate } from 'react-router-dom';    
 import SearchIcon from '@mui/icons-material/Search';
 import {styled, alpha} from '@mui/material/styles';
 
 
-// navbar hentet fra MUI: https://mui.com
 
-// kategori: https://mui.com/material-ui/react-app-bar/#app-bar-with-a-primary-search-field
 
+
+// ------DATA - KATEGORILISTE med tilhørende bilder for hover-effekt
 const categories = [
-    "Fiction", "Mystery", "Thriller", "Romance", "Fantasy", "Morality", "Society", "Power", "Justice", "Adventure", "Tragedy", "War", "Philosophy"
+  { name: "Fiction", img: "/Gutenberg_booksearch/images/fiction.jpg" },
+  { name: "Mystery", img: "/Gutenberg_booksearch/images/mystery.jpg" },
+  { name: "Thriller", img: "/Gutenberg_booksearch/images/thriller.jpg" },
+  { name: "Romance", img: "/Gutenberg_booksearch/images/romance.jpg" },
+  { name: "Fantasy", img: "/Gutenberg_booksearch/images/fantasy.jpg" },
+  { name: "Morality", img: "/Gutenberg_booksearch/images/morality.jpg" },
+  { name: "Society", img: "/Gutenberg_booksearch/images/society.jpg" },
+  { name: "Power", img: "/Gutenberg_booksearch/images/power.jpg" },
+  { name: "Justice", img: "/Gutenberg_booksearch/images/justice.jpg" },
+  { name: "Adventure", img: "/Gutenberg_booksearch/images/adventure.jpg" },
+  { name: "Tragedy", img: "/Gutenberg_booksearch/images/tragedy.jpg" },
+  { name: "War", img: "/Gutenberg_booksearch/images/war.jpg" },
+  { name: "Philosophy", img: "/Gutenberg_booksearch/images/philosophy.jpg" },
 ];
+
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.common.white, 0.15),
   "&:hover": { backgroundColor: alpha(theme.palette.common.white, 0.25) },
-  marginLeft: theme.spacing(2),
-  marginRight: theme.spacing(2),
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {"width" : "auto"},
+  width: "200px",
+  marginLeft:"auto",
 }));
 
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  width: "100%",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    [theme.breakpoints.up("sm")]: {
-      width: "12ch",
-      "&:focus": { width: "20ch" },
-    },
-  },
-}));
-
+// Om menyen er åpen, og hvilket bilde som vises ved hover
 export default function Navbar() {
+    const [open, setOpen]  = useState(false);
+    const [hoverImage, setHoverImage] = useState(categories[0].img);
 const navigate = useNavigate();
 
-const handleSearch = (event) => {
-    if (event.key === "Enter") {
-        const searchTerm = event.target.value;
-        // navigerer til hjemmesiden med søkeparameter
-        navigate(`/?search=${searchTerm}&page=1`);// &page=1 gjør at søket alltid starter på side en.
+// FUNKSJON: Håndterer søk når man trykker enter
+const handleSearch = (e) => {
+    if (e.key === "Enter") {
+        navigate(`/?search=${e.target.value}`);
+            setOpen(false)
     }
 };
 
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        {/* Hovedlinje: Logo, Søk og Favoritter */}
+    <>
+      <AppBar
+        position="sticky"
+        sx={{
+          backgroundColor: "rgba(26, 26, 26, 0.95)",
+          backdropFilter: "blur(5px)",
+        }}
+      >
         <Toolbar>
+          <IconButton
+            color="inherit"
+            edge="start"
+            onClick={() => setOpen(true)}
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
+
           <Typography
             variant="h6"
-            noWrap
-            component={Link} to="/"
+            component={Link}
+            to="/"
             sx={{
               flexGrow: 1,
-            //   display: { xs: "block", sm: "block" },
               textDecoration: "none",
               color: "white",
               fontWeight: "bold",
+              letterSpacing: "2px",
             }}
           >
-            BOK-APP
+            GUTENDEX
           </Typography>
 
-          {/* Søkefeltet*/}
           <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Søk på bok…"
+            <Box
+              sx={{
+                p: "0 10px",
+                height: "100%",
+                position: "absolute",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <SearchIcon fontSize="small" />
+            </Box>
+            <InputBase
+              placeholder="Søk..."
               onKeyDown={handleSearch}
-              inputProps={{ "aria-label": "search" }}
+              sx={{ color: "inherit", pl: 5, width: "100%" }}
             />
           </Search>
-
-          {/* Lenke til favoritter */}
-          <Button color="inherit" component={Link} to="/favorites">
-            Favoritter
-          </Button>
-        </Toolbar>
-
-{/* kategori-linje */}
-<Toolbar
-variant="dense" //litt smalere
-sx={{ 
-            backgroundColor: alpha("#000", 0.1), 
-            display: "flex", 
-            flexWrap: "wrap", //wrapper på små skjermer
-            justifyContent: "center",
-            py: 1,
-            gap: 1
-          }}
-          >
-            {categories.map((cat) => (
-                <Button
-                key={cat}
-                size="small"
-                color="inherit"
-                component={Link}
-                to={`/category/${cat.toLowerCase()}`}
-                sx={{ fontSize: "0.75rem", textTransform: "capitalize"}}
-                >
-                    {cat}  
-                </Button>
-            ))}
         </Toolbar>
       </AppBar>
-    </Box>
+
+      {/* -----------------MENY - OVERLAY ---------------*/}
+      <Drawer
+        anchor="left"
+        open={open}
+        onClose={() => setOpen(false)}
+        transitionDuration={{ enter: 900, exit: 400 }}
+        slotProps={{
+          paper: {
+            sx: {
+              width: { xs: "100%", md: "50%" },
+              backgroundColor: "rgba(15, 15, 15, 0.2)",
+              backdropFilter: "blur(10px)",
+              color: "white",
+            },
+          },
+        }}
+      >
+        <Box sx={{ display: "flex", height: "100%" }}>
+          <Box
+            sx={{
+              width: { xs: "100%", md: "40%" },
+              p: 4,
+              overflowY: "auto",
+              color: "white",
+            }}
+          >
+            <Typography
+              variant="h4"
+              sx={{ mb: 4, fontWeight: "bold", color: "white" }}
+            >
+              Meny
+            </Typography>
+
+            <List>
+              <ListItem
+                button
+                component={Link}
+                to="/"
+                onClick={() => setOpen(false)}
+              >
+                <ListItemText>
+                  <Typography sx={{ fontWeight: "bold", color: "white" }}>
+                    HJEM
+                  </Typography>
+                </ListItemText>
+              </ListItem>
+
+              <ListItem
+                button
+                component={Link}
+                to="/favorites"
+                onClick={() => setOpen(false)}
+              >
+                <ListItemText>
+                  <Typography sx={{ fontWeight: "bold", color: "white" }}>
+                    FAVORITTER
+                  </Typography>
+                </ListItemText>
+              </ListItem>
+            </List>
+
+            <Divider sx={{ my: 3, backgroundColor: "rgba(255,255,255,0.2)" }} />
+
+            {/* OVERSKRIFT: Kategorier */}
+            <Typography
+              variant="overline"
+              sx={{ color: "rgba(255,255,255,0.7)", display: "block", mb: 1 }}
+            >Kategorier
+            </Typography>
+
+            <List>
+              {categories.map((cat) => (
+                <ListItem
+                  button
+                  key={cat.name}
+                  component={Link}
+                  to={`/category/${cat.name.toLowerCase()}`}
+                  onClick={() => setOpen(false)}
+                  onMouseEnter={() => setHoverImage(cat.img)}
+                >
+                  <ListItemText
+                    primary={cat.name}
+                    slotProps={{ primary: { sx: { color: "white" } } }}
+                  />
+                </ListItem>
+              ))}
+            </List>
+          </Box>
+
+          {/* høyre side, dynamisk bilde (skjules på mobil) */}
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", md: "flex" },
+              backgroundImage: `url(${hoverImage})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              transition: "background-image 0.3s ease-in-out",
+              m: 2,
+              borderRadius: "15px",
+            }}
+          />
+        </Box>
+      </Drawer>
+    </>
   );
-}
+}   

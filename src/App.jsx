@@ -2,12 +2,14 @@ import React, {useState, useEffect} from "react";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import { Box, CssBaseline, Fab, Zoom } from "@mui/material";
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+
+// Import av sider og komponenter
 import Home from "./pages/Home.jsx";
 import Category from "./pages/Category.jsx";
 import BookDetails from "./pages/BookDetails.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Favorites from "./pages/Favorites.jsx";
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 
 
