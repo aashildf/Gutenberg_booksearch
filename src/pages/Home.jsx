@@ -22,23 +22,70 @@ const Home = () => {
 
     // Funksjon for å bytte side
     const handlePageChange = (newPage) => {
-        setSearchParams({ search: query, page: newPage.toString()  });
+        setSearchParams({ search: query, page: newPage.toString()  }); window.scrollTo({ top: 600, behavior: "smooth"});//Scroller opp til bøkene ved sidebytte
     };
 
-    if (isLoading) {
-        return (
+    // HERO-BILDE-STI
+    const heroImageUrl = "/Gutenberg_booksearch/images/hero.jpg";
+    return (
+        <Box>
+            {/* HERO-SEKSJON */}
+        <Box
+        sx={{
+                    position: 'relative',
+                    height: '65vh',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundImage: `url(${heroImageUrl})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundAttachment: 'fixed',
+                    color: 'white',
+                    textAlign: 'center',
+                    '&::before': {
+                        content: '""',
+                        position: 'absolute',
+                        top: 0, left: 0, right: 0, bottom: 0,
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    },
+                }}
+        >
+        <Container sx={{ position: 'relative', zIndex: 1 }}>
+            <Typography variant="h1" sx={{ fontWeight: 800, fontSize: { xs: '3rem', md: '5rem' }, mb: 2 }}>
+                GUTENDEX
+            </Typography>
+            <Typography
+            variant="h5" sx={{ mb: 4, fontWeight: 300, fontStyle: 'italic' }}>
+                        Oppdag klassisk litteratur fra hele verden.</Typography>
+            <Button 
+                variant="outlined" 
+                size="large" 
+                sx={{ color: 'white', borderColor: 'white', '&:hover': { bgcolor: 'white', color: 'black' }}}
+                onClick={() => document.getElementById('book-section').scrollIntoView({ behavior: 'smooth' })}
+                    >
+                        Utforsk bøker
+                        </Button>
+        </Container>
+        </Box>
+
+    
+     {/* BOK-SEKSJON */}
+    <Container id="book-section" maxWidth={"xl"} sx={{ py: 8 }}>
+
+
+  {isLoading ? (
+
             <Box display="flex" justifyContent="center" mt={10}>
                 <CircularProgress/>
             </Box>
-        );
-    }
+        ) : error ? (
+   <Typography color="error">Kunne ikke hente bøker...</Typography>
+        ) : (
+            <>
 
-    if (error) return <Typography color="error">Kunne ikke hente bøker...</Typography>;
-
-    return (
-      <Container maxWidth={"xl"} sx={{ py: 4 }}>
         <Typography variant="h4" sx={{ fontWeight: "bold", mb: 4 }}>
-          {searchParams ? "Søkeresultater" : "Populære bøker"}
+          {query ? `Søkeresultater for "${query}"` : "Populære bøker"}
         </Typography>
 
         <Grid
@@ -81,7 +128,7 @@ const Home = () => {
         >
           <Button
             variant="contained"
-            didabled={page === 1}
+            disabled={page === 1}
             onClick={() => handlePageChange(page - 1)}
             sx={{ minWidth: "120px" }}
           >
@@ -95,14 +142,17 @@ const Home = () => {
 
           <Button
             variant="contained"
-            diabled={!data?.next}
+            disabled={!data?.next}
             onClick={() => handlePageChange(page + 1)}
             sx={{ minWidth: "120px" }}  
           >
             Neste
           </Button>
         </Box>
+        </>
+        )}
       </Container>
+      </Box>
     );
 };
 
