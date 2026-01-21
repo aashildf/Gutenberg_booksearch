@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import "./App.css";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { Box, CssBaseline, Fab, Zoom } from "@mui/material";
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
@@ -12,31 +12,41 @@ import Navbar from "./components/Navbar.jsx";
 import Favorites from "./pages/Favorites.jsx";
 
 
+// ---KOMPONENT: sørger for at vi havner øverst på siden ved hvert sidebytte
+const ScrollToTopOnNavigation = () => {
+  const { pathname } = useLocation();
 
-function App() {
-const [showButton, setShowButton] = useState(false);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
-// Lytt til scroll-eventer for å vise/skjule "scroll to top"-knappen
-useEffect(() => {
-  const handleScroll = () => {
-    if (window.scrollY > 300) {
-      setShowButton(true);
-    } else {
-      setShowButton(false);
-    }
-  };
-
-  window.addEventListener("scroll", handleScroll);
-  return () => window.removeEventListener("scroll", handleScroll);
-}, [] );
-
-const scrollToTop = () => {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
+  return null;
 };
 
+  function App() {
+    const [showButton, setShowButton] = useState(false);
+  
+
+  // Lytt til scroll-eventer for å vise/skjule "scroll to top"-knappen
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setShowButton(true);
+      } else {
+        setShowButton(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTopAction = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   return (
     <Box
@@ -46,9 +56,12 @@ const scrollToTop = () => {
         display: "flex",
         flexDirection: "column",
       }}
-    >
+    > 
       <CssBaseline />
       {/* Denne "nullstiller" CSS-en for hele appen */}
+
+      <ScrollToTopOnNavigation/> 
+      {/* går til toppen ved alle sidebytter*/}
 
       {/* Navbar ligger utenfor Routes, så den vises alltid */}
       <Navbar />
@@ -60,7 +73,6 @@ const scrollToTop = () => {
           <Route path="/" element={<Home />} />
 
           {/* Andre ruter */}
-          <Route path="/" element={<Home />} />
           <Route path="/category/:genre" element={<Category />} />
           <Route path="/book/:id" element={<BookDetails />} />
           <Route path="/favorites" element={<Favorites />} />
@@ -69,12 +81,12 @@ const scrollToTop = () => {
         </Routes>
       </Box>
 
-      {/* til toppen-knappen */}
+      {/* til toppen-knappen  som dukker opp når man scroller*/}
       <Zoom in={showButton}>
         <Fab
           color="primary"
           size="small"
-          onClick={scrollToTop}
+          onClick={scrollToTopAction}
           sx={{
             position: "fixed",
             bottom: 32,
@@ -87,6 +99,6 @@ const scrollToTop = () => {
       </Zoom>
     </Box>
   );
-}
+};
 
 export default App;

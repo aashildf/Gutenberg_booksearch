@@ -38,9 +38,13 @@ return (
   <Container maxWidth="xl" sx={{ py: 4 }}>
     <Typography
       variant="h4"
-      sx={{ fontWeight: "bold", mb: 4, textTransform: "capitalize" }}
+      sx={{
+         fontWeight: "bold",
+          mb: 6,
+          textAlign: "center",
+           textTransform: "capitalize" }}
     >
-      Kategori:{genre}
+      Kategori: {genre}
     </Typography>
 
 
@@ -84,7 +88,7 @@ return (
     >
       <Button
         variant="contained"
-        diabled={page === 1}
+        disabled={page === 1}
         onClick={() => handlePageChange(page - 1)}
         sx={{ minWidth: "120px" }}
       >

@@ -86,13 +86,15 @@ const Home = () => {
                 borderColor: "white",
                 "&:hover": { bgcolor: "white", color: "black" },
               }}
-              onClick={() =>{
+              onClick={() => {
                 // tømme søket ved å sette searchParams til ingenting
                 setSearchParams({});
 
                 // scroll ned til bøkene
                 setTimeout(() => {
-                document.getElementById("book-section")?.scrollIntoView({ behavior: "smooth" });
+                  document
+                    .getElementById("book-section")
+                    ?.scrollIntoView({ behavior: "smooth" });
                 }, 100);
               }}
             >
@@ -106,7 +108,10 @@ const Home = () => {
         <Container id="book-section" maxWidth={"xl"} sx={{ py: 8 }}>
           {/* Overskriften står øverst så den alltid er synlig, uansett om bøker lastes med en gang, eller loading-symbolet jobber */}
 
-          <Typography variant="h4" sx={{ fontWeight: "bold", mb: 4 }}>
+          <Typography
+            variant="h4"
+            sx={{ fontWeight: "bold", textAlign: "center", mb: 6 }}
+          >
             {query
               ? `Søkeresultater for "${query}"`
               : category
