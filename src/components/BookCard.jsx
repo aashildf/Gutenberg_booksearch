@@ -5,6 +5,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 
+
 const BookCard = ({ book, onFavoriteToggle }) => {
     const imageUrl = book.formats["image/jpeg"];
     // I Gutendex lagres bilder i object-formats under nøkkelen "formats".
@@ -28,7 +29,7 @@ const toggleFavorite = () => {
 localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
 setIsFavorite(!isFavorite);
 
-// hvis onFavoriteToggle er sendt som prop, kaller vi den for å oppdatere favorittlisten i forelderen
+// hvis onFavoriteToggle er sendt som prop, "kaller" vi den for å oppdatere favorittlisten i forelderen
 if (onFavoriteToggle){
     onFavoriteToggle();
 }

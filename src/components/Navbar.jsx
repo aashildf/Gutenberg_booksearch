@@ -1,6 +1,6 @@
 // NOTATER OM NAVBAR:
 // 1-Bruker "Drawer" for en semintransparent meny som glir ut.
-// 2. Inneholder søkefelt som sender brukeren til forsiden med søkeparametrene.
+// 2. Inneholder bok-kategorier som sender brukeren til forsiden av valgt kategori.
 // 3. "OnMouseEnter" på gategorier bytter bilde på høyre side av menyen.
 // navbar hentet fra MUI: https://mui.com
 
@@ -12,12 +12,13 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Link, useNavigate } from 'react-router-dom';    
 import SearchIcon from '@mui/icons-material/Search';
 import {styled, alpha} from '@mui/material/styles';
+import CloseIcon from "@mui/icons-material/Close";
 
 
 
 
 
-// ------DATA - KATEGORILISTE med tilhørende bilder for hover-effekt
+// ------DATA - KATEGORILISTE: med tilhørende bilder for hover-effekt
 const categories = [
   { name: "Fiction", img: "/Gutenberg_booksearch/images/fiction.jpg" },
   { name: "Mystery", img: "/Gutenberg_booksearch/images/mystery.jpg" },
@@ -54,6 +55,7 @@ const navigate = useNavigate();
 const handleSearch = (e) => {
     if (e.key === "Enter") {
         navigate(`/?search=${e.target.value}`);
+        e.target.value = ""; //Tømmer søkefeltet/sletter teksten
             setOpen(false)
     }
 };
@@ -131,7 +133,22 @@ const handleSearch = (e) => {
           },
         }}
       >
-        <Box sx={{ display: "flex", height: "100%" }}>
+        <Box sx={{ display: "flex", height: "100%", position:"relative" }}>
+
+            {/* ---Lukke-knapp--- */}
+            <IconButton
+            onClick={() => setOpen(false)}
+            sx={{
+                position: "absolute",
+        top: 15,
+        right: 15,
+        color: "white",
+        zIndex: 10, // Sørger for at den ligger over bildene
+        backgroundColor: "rgba(255, 255, 255, 0.1)",
+        "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.2)" },
+            }}>
+                <CloseIcon/>
+            </IconButton>
           <Box
             sx={{
               width: { xs: "100%", md: "40%" },

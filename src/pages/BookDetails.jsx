@@ -1,6 +1,5 @@
-
-import React, {useState, }from "react";
-import { useParams } from "react-router-dom";
+import React, { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import {
   Container,
@@ -10,18 +9,19 @@ import {
   Paper,
   Grid,
   Button,
+  IconButton,
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import CloseIcon from "@mui/icons-material/Close";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { fetchBookDetails } from "../api.js";
 
-
-
 const BookDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
-  // hente data om boken
+  // henter data om boken
   const {
     data: book,
     isLoading,
@@ -36,7 +36,6 @@ const BookDetails = () => {
     const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
     return favorites.some((fav) => fav.id === Number(id));
   });
-
 
   //   stopp sjekk
   if (isLoading)
@@ -81,16 +80,34 @@ const BookDetails = () => {
 
   return (
     <Container sx={{ py: 5 }}>
-      <Paper elevation={3} sx={{ p: 4 }}>
+      <Paper elevation={3} sx={{ p: 4, position: "relative" }}>
+        {/* ----LUKKEKNAPPEN-- */}
+        <IconButton
+          onClick={() => navigate(-1)} //-1 betyr, gå en side tilbake
+          sx={{
+            position: "absolute",
+            top: 15,
+            right: 15,
+            color: "grey.500",
+            transition: "0.2s",
+            "&:hover": {
+              color: "black",
+              backgroundColor: "rgba(0,0,0,0,0.5)",
+            },
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+
         <Grid container spacing={4}>
-          <Grid item xs={12} md={4}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <img
               src={book?.formats["image/jpeg"]}
               alt={book?.title}
               style={{ width: "100%", borderRadius: "8px" }}
             />
           </Grid>
-          <Grid item xs={12} md={8}>
+          <Grid size={{ xs: 12, md: 8 }}>
             <Typography variant="h3" gutterBottom sx={{ fontWeight: "bold" }}>
               {book.title}
             </Typography>
