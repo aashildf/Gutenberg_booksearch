@@ -7,7 +7,7 @@ import BookCard from '../components/BookCard.jsx';
 
 const Category = () => {
     const {genre} = useParams();
-    const [searchParams, setSearchcParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
 
     // Hent sidetall fra URL, standard er 1.
     const page = parseInt(searchParams.get("page") || "1");
@@ -20,17 +20,17 @@ const Category = () => {
 });
 
 const handlePageChange = (newPage) => {
-    setSearchcParams({ page: newPage.toString()});
+    setSearchParams({ page: newPage.toString()});
     window.scrollTo(0, 0); // Scroll til toppen av siden ved sidebytte.
 };
 
-if (isLoading) {
-    return (
-      <Box display="flex" justifyContent="center" mt={10}>
-        <CircularProgress />
-      </Box>
-    );
-}
+// if (isLoading) {
+//     return (
+//       <Box display="flex" justifyContent="center" mt={10}>
+//         <CircularProgress />
+//       </Box>
+//     );
+// }
 
 if (error) return <Typography color="error">Kunne ikke hente bøker for {genre}</Typography>;
 
@@ -42,6 +42,15 @@ return (
     >
       Kategori:{genre}
     </Typography>
+
+
+    {isLoading ?(
+      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 10 }}>
+        <CircularProgress />
+        <Typography sx={{ mt: 2 }}>Henter klassikere...</Typography>
+      </Box>
+    ) : (
+         <>
 
     <Grid
       container
@@ -63,7 +72,7 @@ return (
       ))}
     </Grid>
 
-    {/* Paginering for kategori */}
+    {/*----------------- Paginering for kategori -----------*/}
     <Box
       sx={{
         display: "flex",
@@ -91,9 +100,10 @@ return (
         Neste
       </Button>
     </Box>
+    </>
+    )}
   </Container>
-);
-
+ );
 };
 
 export default Category;
