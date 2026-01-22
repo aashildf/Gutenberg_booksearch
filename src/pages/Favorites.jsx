@@ -18,7 +18,18 @@ const refreshFavorites = () => {
 
     return (
       <Container maxWidth="xl" sx={{ py: 4 }}>
-        <Typography variant="h4" sx={{ fontWeight: "bold", mb: 4 }}>
+        <Typography
+          variant="h2"
+          sx={{
+            fontWeight: 900,
+            mb: 4,
+            mt: 5,
+            fontFamily: '"Playfair Display", serif',
+            color:"primary",
+            textAlign:"center",
+            fontSize:{xs:"2rem", md: "4rem"}
+          }}
+        >
           Mine favoritter
         </Typography>
 
@@ -29,32 +40,31 @@ const refreshFavorites = () => {
             </Typography>
           </Box>
         ) : (
-          <Grid 
-          container 
+          <Grid
+            container
+            sx={{
+              width: "100%",
+              margin: 0,
+              display: "flex",
+              flexWrap: "wrap",
+              // Bruker flex-start her så kortene legger seg pent til venstre
+              // hvis du f.eks. bare har 2 favoritter
+              justifyContent: "flex-start",
+            }}
+          >
+            {favorites.map((book) => (
+              <Grid
+                item
+                key={book.id}
                 sx={{
-            width: "100%", 
-            margin: 0, 
-            display: "flex", 
-            flexWrap: "wrap",
-            // Bruker flex-start her så kortene legger seg pent til venstre 
-            // hvis du f.eks. bare har 2 favoritter
-            justifyContent: "flex-start" 
-          }}
+                  display: "flex",
+                  minWidth: 0,
+                  // Tvinger 4 kort på stor skjerm, 3 på medium, 2 på tablet og 1 på mobil
+                  flexBasis: { lg: "25%", md: "33.33%", sm: "50%", xs: "100%" },
+                  maxWidth: { lg: "25%", md: "33.33%", sm: "50%", xs: "100%" },
+                  p: 1.5, // Dette lager mellomrommet (erstatter spacing={4})
+                }}
               >
-                {favorites.map((book) => (
-                    <Grid
-                    item
-                    key={book.id}
-                    sx={{
-                        display: "flex",
-                        minWidth: 0,
-                        // Tvinger 4 kort på stor skjerm, 3 på medium, 2 på tablet og 1 på mobil
-                flexBasis: { lg: "25%", md: "33.33%", sm: "50%", xs: "100%" },
-                maxWidth: { lg: "25%", md: "33.33%", sm: "50%", xs: "100%" },
-                p: 1.5, // Dette lager mellomrommet (erstatter spacing={4})
-              }}
-              >
-               
                 {/* vi sender refreshFavorites som prop til BookCard */}
                 <BookCard book={book} onFavoriteToggle={refreshFavorites} />
               </Grid>

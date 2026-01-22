@@ -6,6 +6,15 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 
 
+const formatAuthorName = (name) => {
+  if (!name) return "Unknown Author";
+  if (name.includes(',')) {
+    const [last, first] = name.split(', ');
+    return `${first} ${last}`;
+  }
+  return name;
+};
+
 const BookCard = ({ book, onFavoriteToggle }) => {
     const imageUrl = book.formats["image/jpeg"];
     // I Gutendex lagres bilder i object-formats under nøkkelen "formats".
@@ -49,9 +58,19 @@ if (onFavoriteToggle){
           "&:hover": { transform: "scale(1.02)" },
         }}
       >
-        {/* coverbilde */}
+        {/* ----Coverbilde---- */}
         <Box
-          sx={{ bgcolor: "#f5f5f5", display: "flex", justifyContent: "center" }}
+          sx={{
+            bgcolor: "#f5f5f5",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: 250,
+            pb: 1,
+            pt: 2,
+            overflow: "hidden",
+          }}
         >
           <CardMedia
             component="img"
@@ -60,43 +79,57 @@ if (onFavoriteToggle){
             }
             alt={book.title}
             sx={{
-              height: 250,
-              width: "100%",
+              display: "block",
+              marginLeft: "auto",
+              marginRight: "auto",
+              maxHeight: "100%",
+              maxWidth: "100%",
+              width: "auto",
+              height:"auto",
               objectFit: "contain",
               bgcolor: "#f5f5f5",
-              p: 1,
+              //   p: 1,
             }}
           />
         </Box>
 
-        {/* tekstinnhold */}
+        {/* ----Tekstinnhold---- */}
         <CardContent
-          sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}
+          sx={{
+            flexGrow: 1,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
         >
-          <h3
-            style={{
-              fontSize: "1rem",
-              fontWeight: "bold",
-              margin: "0 0 8px 0",
-              // Tvinger frem linjeskift uansett:
-              whiteSpace: "normal",
-              wordWrap: "break-word",
-              overflowWrap: "anywhere",
+          <Typography
+            variant="h6"
+            sx={{
+              fontFamily: '"Times New Roman", Times, serif',
+              fontWeight: 500,
+              letterSpacing: "0.08em",
+              lineHeight: 1.4,
+              textAlign: "center",
+              color: "#1C1A17",
+              fontSize: "1.1rem",
+              mt: 1,
+              mb: 0.5,
+
               display: "-webkit-box",
               WebkitLineClamp: 2,
               WebkitBoxOrient: "vertical",
               overflow: "hidden",
-              height: "2.5em", // Låser høyden slik at kortene blir like brede
-              lineHeight: "1.25em",
             }}
           >
             {book.title}
-          </h3>
+          </Typography>
 
           <Typography
             variant="body2"
             color="text.secondary"
             sx={{
+              textAlign: "center",
+              letterSpacing: "0.02em",
               display: "-webkit-box",
               WebkitLineClamp: 1,
               WebkitBoxOrient: "vertical",
@@ -104,7 +137,9 @@ if (onFavoriteToggle){
             }}
           >
             {/* mapper gjennom forfatttere, pga det kan være flere */}
-            {book.authors?.map((a) => a.name).join(", ") || "Ukjent forfatter"}
+            av{" "}
+            {book.authors?.map((a) => formatAuthorName(a.name)).join(", ") ||
+              "Ukjent forfatter"}
           </Typography>
         </CardContent>
 

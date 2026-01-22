@@ -29,7 +29,7 @@ const Home = () => {
     // -------------HERO-SEKSJON---------------
 
 // ------Hero-Bildet---------
-    const heroImageUrl = "/Gutenberg_booksearch/images/hero.jpg";
+    const heroImageUrl = "/Gutenberg_booksearch/images/hero4.jpg";
     return (
       <Box>
         {/* Hero-seksjonen*/}
@@ -94,17 +94,33 @@ const Home = () => {
               Oppdag klassisk litteratur fra hele verden.
             </Typography>
 
-            {/* ------Knapp: "Utforsk bøker"------ */}
+            {/* ------Knapp: "Utforsk samlingen"------ */}
             <Button
               variant="outlined"
               size="large"
               sx={{
+                mt: 4, //luft over knappen
+                px: 6, //ekstra bredde
+                py: 1.5, //Ekstra høyde
+                fontSize: "1.1rem",
+                fontWeight: "bold",
                 color: "white",
-                borderColor: "white",
-                "&:hover": { bgcolor: "white", color: "black" },
+                borderColor: "secondary.main",
+                borderWidth: "2px",
+                borderRadius: "0",
+                letterSpacing: "2px",
+                transition: "all 0.3s ease",
+                "&:hover": {
+                  bgcolor: "secondary.main",
+                  color: "black",
+                  borderWidth: "2px",
+                  borderColor: "white",
+                  transform: "translateY(-3px)", // Løfter knappen
+                  boxShadow: "0 10px 20px rgba(0,0,0,0.4)",
+                },
               }}
               onClick={() => {
-                // tømme søket ved å sette searchParams til ingenting
+                // tømmer søket ved å sette searchParams til ingenting
                 setSearchParams({});
 
                 // scroll ned til bøkene
@@ -115,7 +131,7 @@ const Home = () => {
                 }, 100);
               }}
             >
-              Utforsk bøker
+              Utforsk samlingen
             </Button>
           </Container>
         </Box>
@@ -126,8 +142,16 @@ const Home = () => {
           {/* Overskriften står øverst så den alltid er synlig, uansett om bøker lastes med en gang, eller loading-symbolet jobber */}
 
           <Typography
-            variant="h4"
-            sx={{ fontWeight: "bold", textAlign: "center", mb: 6 }}
+            variant="h6"
+            sx={{
+              fontWeight: 500,
+              mb: 4,
+              mt: 5,
+              fontFamily: '"Playfair Display", serif',
+              color: "primary",
+              textAlign: "center",
+              fontSize: { xs: "2rem", md: "4rem" },
+            }}
           >
             {query
               ? `Søkeresultater for "${query}"`
@@ -135,7 +159,7 @@ const Home = () => {
               ? `Kategori: ${
                   category.charAt(0).toUpperCase() + category.slice(1)
                 }`
-              : "Populære bøker"}
+              : "Utforsk Arkivet"}
           </Typography>
 
           {/* -----------LOADING ------------*/}

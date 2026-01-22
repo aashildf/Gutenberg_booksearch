@@ -23,6 +23,16 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import CategoryIcon from "@mui/icons-material/Category";
 import { fetchBookDetails } from "../api.js";
 
+const formatAuthorName = (name) => {
+    if (!name) return "Unknown Author";
+  if (name.includes(',')) {
+    const [last, first] = name.split(', ');
+    return `${first} ${last}`;
+  }
+  return name;
+};
+
+
 const BookDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -63,7 +73,7 @@ const BookDetails = () => {
     const text = subjects.join(" ").toLowerCase();
 
 
-    //Definerer søkeord som  hver av de 13 kategoriene innehar
+    //Definerer søkeord som hver av de 13 kategoriene innehar
     const rules = [
       {
         name: "Fantasy",
@@ -214,11 +224,18 @@ return found ? found.name: "Klassiker";
           >
             {/* ---Boktittel--- */}
             <Typography
-              variant="h3"
+              variant="h1"
               sx={{
-                fontFamily: "'Playfair Display', serif",
-                fontWeight: "bold",
-                mb: 1,
+                fontFamily: '"Times New Roman", Times, serif',
+                fontSize: { xs: "2rem", md: "3rem" },
+                fontWeight: "500",
+                color: "#1C1A17",
+                textAlign: "left",
+                letterSpacing: "0.12em",
+                wordSpacing: "0.2em",
+                mt: "0.6em",
+                mb: "0.4em",
+                lineHeight: 1.2,
               }}
             >
               {book.title}
@@ -228,12 +245,15 @@ return found ? found.name: "Klassiker";
             <Typography
               variant="h5"
               sx={{
-                fontStyle: "italic",
-                color: "#6f2828",
-                mb: 3,
+                fontFamily: '"Times New Roman", Times, serif',
+                fontSize: "150%",
+                color: "#1C1A17",
+                mt: "1.5em",
+                mb: "1.5em",
+                letterSpacing: "0.05em",
               }}
             >
-              {book.authors?.map((a) => a.name).join(", ")}
+              av {book.authors?.map((a) => formatAuthorName(a.name)).join(", ")}
             </Typography>
 
             {/* ------Knapper for info/ chips------ */}
