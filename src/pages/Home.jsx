@@ -62,17 +62,34 @@ const Home = () => {
             <Typography
               variant="h1"
               sx={{
-                fontWeight: 800,
-                fontSize: { xs: "3rem", md: "5rem" },
+                fontFamily: '"Playfair Display", serif',
+                fontWeight: "900",
+                color: "#fbf4eb",
                 mb: 2,
+                fontSize: { xs: "3.5rem", sm: "5.5rem", md: "7rem" },
+                textAlign: "center",
+                lineHeight: 1,
+                letterSpacing: "0.05em",
+                textTransform: "uppercase",
               }}
             >
               GUTENDEX
             </Typography>
+
             {/* -------Hero tekst-2------- */}
             <Typography
               variant="h5"
-              sx={{ mb: 4, fontWeight: 300, fontStyle: "italic" }}
+              sx={{
+                mb: 4,
+                color: "#fbf4eb",
+                fontWeight: 400,
+                fontFamily: '"Lato", sans-serif',
+                textAlign: "center",
+                fontSize: { xs: "1rem", sm: "1.2rem", md: "1.5rem" },
+                maxWidth: "600px",
+                mx: "auto",
+                opacity: 0.9,
+              }}
             >
               Oppdag klassisk litteratur fra hele verden.
             </Typography>

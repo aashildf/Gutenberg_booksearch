@@ -10,11 +10,17 @@ import {
   Grid,
   Button,
   IconButton,
+  Chip,
+  Stack,
+  Divider,
 } from "@mui/material";
+import DownloadIcon from "@mui/icons-material/Download";
+import LanguageIcon from "@mui/icons-material/Language";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CloseIcon from "@mui/icons-material/Close";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
+import CategoryIcon from "@mui/icons-material/Category";
 import { fetchBookDetails } from "../api.js";
 
 const BookDetails = () => {
@@ -37,13 +43,82 @@ const BookDetails = () => {
     return favorites.some((fav) => fav.id === Number(id));
   });
 
-  //   stopp sjekk
+  //   ------FUNKSJONER--------
+
+  // ----- Funksjon:oversetter språkkoder til norsk-----
+  const getLanguageName = (code) => {
+    const languages = {
+      en: "Engelsk",
+      no: "Norsk",
+      fr: "Fransk",
+      de: "Tysk",
+      es: "Spansk",
+    };
+    return languages[code.toLowerCase()] || code.toUpperCase();
+  };
+
+  // ----Funksjon:{/* (Gutendex) bruker veldig spesifikke emneord (subjects), jeg ønsker å filtrere dem inn oppgavens hovedkategorier.  */}
+  const getCategoryName = (subjects) => {
+    if (!subjects || subjects.length === 0) return "klassiker";
+    const text = subjects.join(" ").toLowerCase();
+
+
+    //Definerer søkeord som  hver av de 13 kategoriene innehar
+    const rules = [
+      {
+        name: "Fantasy",
+        matches: [
+          "fantasy",
+          "fairy",
+          "vampire",
+          "ghost",
+          "supernatural",
+          "gothic",
+          "magic",
+        ],
+      },
+      { name: "Mystery", matches: ["mystery", "detective", "crime", "murder"] },
+      {
+        name: "Romance",
+        matches: ["romance", "love", "courtship", "marriage"],
+      },
+      {
+        name: "Adventure",
+        matches: ["adventure", "voyage", "sea stories", "frontier"],
+      },
+      { name: "Thriller", matches: ["thriller", "suspense", "intrigue"] },
+      {
+        name: "Tragedy",
+        matches: ["tragedy", "conflict of generations", "death"],
+      },
+      { name: "War", matches: ["war", "military", "battle"] },
+      { name: "Philosophy", matches: ["philosoph", "meditations"] },
+      { name: "Morality", matches: ["moral", "ethics", "conduct of life"] },
+      { name: "Society", matches: ["society", "social", "class", "poverty"] },
+      { name: "Power", matches: ["power", "politics", "monarchy", "kings"] },
+      { name: "Justice", matches: ["justice", "law", "court", "prison"] },
+      { name: "Fiction", matches: ["fiction"] }, // Denne må ligge nederst!
+    ];
+
+    // Finn den første kategorien som treffer
+    const found =  rules.find(rule => 
+        rule.matches.some(keyword => text.includes(keyword))
+);
+    
+
+return found ? found.name: "Klassiker";
+  };
+
+
+
+  //   Sjekker for Loading og Error-----
   if (isLoading)
     return (
       <Box sx={{ display: "flex", justifyContent: "center", mt: 10 }}>
         <CircularProgress />
       </Box>
     );
+
 
   if (error || !book)
     return (
@@ -58,11 +133,13 @@ const BookDetails = () => {
     let updatedFavorites;
 
     if (isFavorite) {
+      // Hvis boken er favoritt, fjern den fra listen
       updatedFavorites = favorites.filter((fav) => fav.id !== book.id);
     } else {
+      // Hvis boken ikke er favoritt, legg den til
       updatedFavorites = [...favorites, book];
     }
-
+    // lagre den nye listen i nettleseren
     localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
     setIsFavorite(!isFavorite);
   };
@@ -99,60 +176,171 @@ const BookDetails = () => {
           <CloseIcon />
         </IconButton>
 
-        <Grid container spacing={4}>
-          <Grid size={{ xs: 12, md: 4 }}>
-            <img
+        <Grid
+          container
+          spacing={6}
+          sx={{ alignItems: "center", justifyContent: "center" }}
+        >
+          {/* ---Bok cover- venstre side--- */}
+          <Grid
+            item
+            xs={12}
+            md={5}
+            sx={{ display: "flex", justifyContent: "center" }}
+          >
+            <Box
+              component="img"
               src={book?.formats["image/jpeg"]}
               alt={book?.title}
-              style={{ width: "100%", borderRadius: "8px" }}
+              sx={{
+                width: "auto",
+                height: "auto",
+                maxWidth: "100%",
+                maxHeight: "450px",
+                borderRadius: "4px",
+                boxShadow: "0 20px 40px rgba(0,0,0,0.3)",
+                display: "block",
+                // margin: { xs: "0 auto", md: "0" },
+              }}
             />
           </Grid>
-          <Grid size={{ xs: 12, md: 8 }}>
-            <Typography variant="h3" gutterBottom sx={{ fontWeight: "bold" }}>
+
+          {/* ----Tekst og info- høyre side----(Midtstilt på mobil, venstre på PC)*/}
+          <Grid
+            item
+            xs={12}
+            md={7}
+            sx={{ textAlign: { xs: "center", md: "left" } }}
+          >
+            {/* ---Boktittel--- */}
+            <Typography
+              variant="h3"
+              sx={{
+                fontFamily: "'Playfair Display', serif",
+                fontWeight: "bold",
+                mb: 1,
+              }}
+            >
               {book.title}
             </Typography>
 
-            <Typography variant="h5" color="textSecondary" gutterBottom>
+            {/* ---Forfatter--- */}
+            <Typography
+              variant="h5"
+              sx={{
+                fontStyle: "italic",
+                color: "#6f2828",
+                mb: 3,
+              }}
+            >
               {book.authors?.map((a) => a.name).join(", ")}
             </Typography>
 
-            <Box sx={{ my: 3 }}>
-              <Typography variant="body1">
-                <strong>Språk:</strong>
-                {book.languages?.join(",").toUpperCase()}
-              </Typography>
-              <Typography variant="body1">
-                <strong>Antall nedlastinger:</strong>
-                {book.download_count?.toLocaleString()}
-              </Typography>
-              <Typography variant="body1">
-                <strong>Emner:</strong> {book.subjects?.join(",")}
-              </Typography>
-            </Box>
+            {/* ------Knapper for info/ chips------ */}
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{
+                mb: 4,
+                flexWrap: "wrap",
+                justifyContent: { xs: "center", md: "flex-start" },
+                gap: 1,
+              }}
+            >
+              <Chip
+                icon={<DownloadIcon />}
+                label={`${book.download_count?.toLocaleString()} Nedlastinger`}
+                sx={{ borderRadius: "8px" }}
+              />
 
-            <Box sx={{ display: "flex", gap: 2 }}>
+              <Chip
+                icon={<CategoryIcon />}
+                label={`Kategori: ${getCategoryName(book.subjects)}`}
+                sx={{ borderRadius: "8px" }}
+              />
+
+              <Chip
+                icon={<LanguageIcon />}
+                label={getLanguageName(book.languages?.[0])}
+                sx={{ borderRadius: "8px" }}
+              />
+            </Stack>
+
+            {/* ---skillelinje----- */}
+            <Divider sx={{ mb: 4 }} />
+
+            {/* Les nå- knapp -sentrert på mobil*/}
+            <Stack
+              spacing={2}
+              sx={{ maxWidth: "350px", mx: { xs: "auto", md: "0" } }}
+            >
               <Button
-                variant={isFavorite ? "contained" : "outlined"} // Endrer stil basert på status
+                variant="contained"
+                size="large"
+                component="a"
+                href={digitalLink}
+                target={"_blank"}
+                rel="noopener noreferrer"
+                startIcon={<MenuBookIcon />}
+                sx={{
+                  bgcolor: "#C5A059",
+                  py: 1.8,
+                  borderRadius: "12px",
+                  fontWeight: "bold",
+                  fontSize: "1rem",
+                  textTransform: "uppercase",
+                  "&:hover": { bgcolor: "#B38F4D" },
+                }}
+              >
+                Les nå
+              </Button>
+
+              {/* legg til/fjern fra favoritter-knapp */}
+              <Button
+                variant="outlined"
+                size="large"
+                onClick={toggleFavorite}
                 startIcon={
                   isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />
-                } // Bytter mellom fylt og tomt hjerte
-                color="secondary"
-                onClick={toggleFavorite} // <-- Dette er den viktigste linjen som kobler til funksjonen
+                }
+                sx={{
+                  py: 1.8,
+                  borderRadius: "12px",
+                  borderColor: "#C5A059",
+                  borderWidth: "2px",
+                  color: "#C5A059",
+                  fontWeight: "bold",
+                  fontSize: "1rem",
+                  textTransform: "uppercase",
+                  "&:hover": {
+                    borderWidth: "2px",
+                    borderColor: "#B38F4D",
+                    backgroundColor: "rgba(197, 160, 89, 0.05)",
+                  },
+                }}
               >
                 {isFavorite ? "Fjern fra favoritter" : "Legg til i favoritter"}
               </Button>
+            </Stack>
 
-              {/* knapp for å lese boken digitalt */}
-              <Button
-                variant="outlined"
-                component="a"
-                href={digitalLink}
-                target="blank"
-                rel="noopener noreferrer"
-                startIcon={<OpenInNewIcon />}
+            {/* ---Utdrag fra boken --(Er pr. nå en statisk tekst, siden API-et ikke har denne muligheten- jeg måtte eventuelt da ha hentet den infoen fra ett annet API og koblet sammen.) */}
+            <Box sx={{ mt: 5 }}>
+              <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
+                Utdrag fra boken
+              </Typography>
+              <Typography
+                variant="body1"
+                sx={{ color: "text.secondary", fontStyle: "italic" }}
               >
-                Les boken digitalt
-              </Button>
+                “For most of history, Anonymous was a woman. And I would venture
+                to guess that Anon, who wrote so many poems without signing
+                them, was often a woman who had no room of her own. No quiet
+                place in which to sit, no uninterrupted time in which to think.
+                Intellectual freedom depends upon material things. Poetry
+                depends upon intellectual freedom. And women have always been
+                poor, not for two hundred years merely, but from the beginning
+                of time.” (Virginia Woolf, "A Room of One’s Own", 1929).
+              </Typography>
             </Box>
           </Grid>
         </Grid>

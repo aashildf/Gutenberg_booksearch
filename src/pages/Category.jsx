@@ -24,13 +24,7 @@ const handlePageChange = (newPage) => {
     window.scrollTo(0, 0); // Scroll til toppen av siden ved sidebytte.
 };
 
-// if (isLoading) {
-//     return (
-//       <Box display="flex" justifyContent="center" mt={10}>
-//         <CircularProgress />
-//       </Box>
-//     );
-// }
+
 
 if (error) return <Typography color="error">Kunne ikke hente bøker for {genre}</Typography>;
 

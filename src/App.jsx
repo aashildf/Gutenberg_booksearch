@@ -52,14 +52,10 @@ const ScrollToTopOnNavigation = () => {
     <Box
       sx={{
         minHeight: "100vh",
-        bgcolor: "#f9f9f9",
         display: "flex",
         flexDirection: "column",
       }}
-    > 
-      <CssBaseline />
-      {/* Denne "nullstiller" CSS-en for hele appen */}
-
+    >
       <ScrollToTopOnNavigation/> 
       {/* går til toppen ved alle sidebytter*/}
 

@@ -1,5 +1,5 @@
 // NOTATER OM NAVBAR:
-// 1-Bruker "Drawer" for en semintransparent meny som glir ut.
+// 1-Bruker "Drawer" (skuff) for en semintransparent meny som glir ut.
 // 2. Inneholder bok-kategorier som sender brukeren til forsiden av valgt kategori.
 // 3. "OnMouseEnter" på gategorier bytter bilde på høyre side av menyen.
 // navbar hentet fra MUI: https://mui.com
@@ -7,14 +7,12 @@
 
 // IMPORTS
 import {useState} from 'react';
-import { AppBar, Toolbar, Typography, IconButton, Drawer, List, ListItem, ListItemText, InputBase, Box, Divider} from '@mui/material';
+import { AppBar, Toolbar, Typography, IconButton, Drawer, List, ListItem, ListItemText, InputBase, Box, Button,  Divider, ListItemButton} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link, useNavigate } from 'react-router-dom';    
 import SearchIcon from '@mui/icons-material/Search';
 import {styled, alpha} from '@mui/material/styles';
 import CloseIcon from "@mui/icons-material/Close";
-
-
 
 
 
@@ -35,27 +33,30 @@ const categories = [
   { name: "Philosophy", img: "/Gutenberg_booksearch/images/philosophy.jpg" },
 ];
 
-
+//Styled komponent for søkefeltet
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.common.white, 0.15),
   "&:hover": { backgroundColor: alpha(theme.palette.common.white, 0.25) },
-  width: "200px",
+  width: "auto",
   marginLeft:"auto",
+  display: "flex",
+  alignItems: "center",
 }));
 
 // Om menyen er åpen, og hvilket bilde som vises ved hover
 export default function Navbar() {
     const [open, setOpen]  = useState(false);
     const [hoverImage, setHoverImage] = useState(categories[0].img);
-const navigate = useNavigate();
+    const [searchQuery, setSearchQuery] = useState("");
+    const navigate = useNavigate();
 
-// FUNKSJON: Håndterer søk når man trykker enter
-const handleSearch = (e) => {
-    if (e.key === "Enter") {
-        navigate(`/?search=${e.target.value}`);
-        e.target.value = ""; //Tømmer søkefeltet/sletter teksten
+// FUNKSJON: Håndterer søket ----------------------------
+const executeSearch = (value) => {
+    if (value.trim() ){
+        navigate(`/?search=${value}`);
+        setSearchQuery(""); //Tømmer søkefeltet/sletter teksten
             setOpen(false)
     }
 };
@@ -70,16 +71,18 @@ const handleSearch = (e) => {
           backdropFilter: "blur(5px)",
         }}
       >
+        {/* -------Hamburgermeny- Ikon------ */}
         <Toolbar>
           <IconButton
             color="inherit"
             edge="start"
             onClick={() => setOpen(true)}
-            sx={{ mr: 2 }}
+            sx={{ mr: 2, color: "white" }} //tvinger den til å være hvit, pga mørkt bilde.
           >
             <MenuIcon />
           </IconButton>
 
+          {/* -------Logo: GUTENDEX------------- */}
           <Typography
             variant="h6"
             component={Link}
@@ -89,34 +92,51 @@ const handleSearch = (e) => {
               textDecoration: "none",
               color: "white",
               fontWeight: "bold",
-              letterSpacing: "2px",
+              letterSpacing: "3px",
             }}
           >
             GUTENDEX
           </Typography>
 
+          {/* -------------SØKEFELTET------------ */}
           <Search>
-            <Box
-              sx={{
-                p: "0 10px",
-                height: "100%",
-                position: "absolute",
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <SearchIcon fontSize="small" />
-            </Box>
             <InputBase
               placeholder="Søk..."
-              onKeyDown={handleSearch}
-              sx={{ color: "inherit", pl: 5, width: "100%" }}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && executeSearch(searchQuery)}
+              sx={{
+                color: "white",
+                ml: 2,
+                width: { xs: "120px", sm: "200px" },
+                fontSize: "0.9rem",
+              }}
             />
+
+            {/* -------knapp med ikon og teskt------- */}
+            <Button
+              onClick={() => executeSearch(searchQuery)}
+              variant="contained"
+              size="small"
+              startIcon={<SearchIcon />}
+              sx={{
+                ml: 1,
+                backgroundColor: "secondary.main",
+                color: "white",
+                "&:hover": { backgroundColor: "primary.main" },
+                textTransform: "none",
+                fontWeight: "bold",
+                minWidth: "80px",
+                display: { xs: "none", sm: "flex" }, //Skjuler teksten på knappen på små mobiler
+              }}
+            >
+              Søk
+            </Button>
           </Search>
         </Toolbar>
       </AppBar>
 
-      {/* -----------------MENY - OVERLAY ---------------*/}
+      {/* -----------------MENY - DRAWER/OVERLAY ---------------*/}
       <Drawer
         anchor="left"
         open={open}
@@ -125,97 +145,108 @@ const handleSearch = (e) => {
         slotProps={{
           paper: {
             sx: {
-              width: { xs: "100%", md: "50%" },
-              backgroundColor: "rgba(15, 15, 15, 0.2)",
+              width: { xs: "100%", md: "60%" },
+              backgroundColor: "rgba(28, 26, 23, 0.98)",
               backdropFilter: "blur(10px)",
               color: "white",
             },
           },
         }}
       >
-        <Box sx={{ display: "flex", height: "100%", position:"relative" }}>
-
-            {/* ---Lukke-knapp--- */}
-            <IconButton
+        <Box sx={{ display: "flex", height: "100%", position: "relative" }}>
+          {/* ---Lukke-knapp--- */}
+          <IconButton
             onClick={() => setOpen(false)}
             sx={{
-                position: "absolute",
-        top: 15,
-        right: 15,
-        color: "white",
-        zIndex: 10, // Sørger for at den ligger over bildene
-        backgroundColor: "rgba(255, 255, 255, 0.1)",
-        "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.2)" },
-            }}>
-                <CloseIcon/>
-            </IconButton>
-          <Box
-            sx={{
-              width: { xs: "100%", md: "40%" },
-              p: 4,
-              overflowY: "auto",
+              position: "absolute",
+              top: 20,
+              right: 20,
               color: "white",
+              zIndex: 10, // Sørger for at den ligger over bildene
+              backgroundColor: "rgba(255, 255, 255, 0.1)",
+              "&:hover": { backgroundColor: "secondary.main" },
             }}
           >
+            <CloseIcon />
+          </IconButton>
+
+          {/* --------- (Venstre side, LENKER------------ */}
+          <Box
+            sx={{
+              width: { xs: "100%", md: "45%" },
+              p: { xs: 2, md: 4 },
+              overflowY: "auto",
+            }}
+          >
+            {/* ----Meny--- */}
             <Typography
-              variant="h4"
-              sx={{ mb: 4, fontWeight: "bold", color: "white" }}
+              variant="h3"
+              sx={{
+                mb: 1,
+                fontWeight: 900,
+                color: "white",
+                fontSize: { xs: "2rem", md: "3rem" },
+              }} // Responsiv størrelse }}
             >
               Meny
             </Typography>
 
             <List>
-              <ListItem
-                button
-                component={Link}
-                to="/"
-                onClick={() => setOpen(false)}
-              >
-                <ListItemText>
-                  <Typography sx={{ fontWeight: "bold", color: "white" }}>
-                    HJEM
-                  </Typography>
-                </ListItemText>
-              </ListItem>
-
-              <ListItem
-                button
-                component={Link}
-                to="/favorites"
-                onClick={() => setOpen(false)}
-              >
-                <ListItemText>
-                  <Typography sx={{ fontWeight: "bold", color: "white" }}>
-                    FAVORITTER
-                  </Typography>
-                </ListItemText>
-              </ListItem>
+              {["HJEM", "FAVORITTER"].map((text) => (
+                <ListItem key={text} disablePadding>
+                  <ListItemButton
+                    component={Link}
+                    to={text === "HJEM" ? "/" : "/favorites"}
+                    onClick={() => setOpen(false)}
+                    sx={{ py: 2 }}
+                  >
+                    <ListItemText
+                      primary={text}
+                      slotProps={{
+                        primary: {
+                          sx: { fontWeight: "bold", letterSpacing: "2px" },
+                        },
+                      }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              ))}
             </List>
 
-            <Divider sx={{ my: 3, backgroundColor: "rgba(255,255,255,0.2)" }} />
+            {/* ---Delestrek--- */}
+            <Divider
+              sx={{ my: 3, backgroundColor: "rgba(235, 205, 205, 0.7)" }}
+            />
 
-            {/* OVERSKRIFT: Kategorier */}
+            {/* Overskrift: "Kategorier" */}
             <Typography
               variant="overline"
-              sx={{ color: "rgba(255,255,255,0.7)", display: "block", mb: 1 }}
-            >Kategorier
+              sx={{
+                color: "rgba(235, 205, 205, 0.7)",
+                display: "block",
+                mb: 2,
+                ml: 2,
+                fontWeight: "bold",
+                letterSpacing: "1px",
+                fontSize: "1.1rem",
+              }}
+            >
+              Kategorier
             </Typography>
 
-            <List>
+            {/* ---Liste med kategoriene, som lenker---- */}
+            <List sx={{ mt: 2 }}>
               {categories.map((cat) => (
-                <ListItem
-                  button
+                <ListItemButton
                   key={cat.name}
                   component={Link}
                   to={`/category/${cat.name.toLowerCase()}`}
                   onClick={() => setOpen(false)}
                   onMouseEnter={() => setHoverImage(cat.img)}
+                  sx={{ py: 0.5, "&:hover": { color: "secondary.main" } }}
                 >
-                  <ListItemText
-                    primary={cat.name}
-                    slotProps={{ primary: { sx: { color: "white" } } }}
-                  />
-                </ListItem>
+                  <ListItemText primary={cat.name} />
+                </ListItemButton>
               ))}
             </List>
           </Box>
@@ -228,9 +259,10 @@ const handleSearch = (e) => {
               backgroundImage: `url(${hoverImage})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
-              transition: "background-image 0.3s ease-in-out",
-              m: 2,
-              borderRadius: "15px",
+              transition: "background-image 0.4s ease-in-out",
+              m: 3,
+              borderRadius: "4px",
+              boxShadow: "inset 0 0 100px rgba(0,0,0,0.5)",
             }}
           />
         </Box>
