@@ -254,4 +254,3 @@ export default Home;
 
 
 
-// Komponenten som henter bøkene og viser dem på hjemmesiden.

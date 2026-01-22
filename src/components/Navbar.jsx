@@ -13,6 +13,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import {styled, alpha} from '@mui/material/styles';
 import CloseIcon from "@mui/icons-material/Close";
+import { useMediaQuery } from "@mui/material";
 
 
 
@@ -36,18 +37,20 @@ const categories = [
 //Styled komponent for søkefeltet
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  borderRadius: "8px",
+  backgroundColor: alpha(theme.palette.common.white, 0.2),
   "&:hover": { backgroundColor: alpha(theme.palette.common.white, 0.25) },
   width: "auto",
-  marginLeft:"auto",
+  marginLeft: "auto",
   display: "flex",
   alignItems: "center",
+  overflow: "hidden",
 }));
 
 // Om menyen er åpen, og hvilket bilde som vises ved hover
 export default function Navbar() {
     const [open, setOpen]  = useState(false);
+    const isMobile = useMediaQuery('(max-width:600px)');
     const [hoverImage, setHoverImage] = useState(categories[0].img);
     const [searchQuery, setSearchQuery] = useState("");
     const navigate = useNavigate();
@@ -57,8 +60,19 @@ const executeSearch = (value) => {
     if (value.trim() ){
         navigate(`/?search=${value}`);
         setSearchQuery(""); //Tømmer søkefeltet/sletter teksten
-            setOpen(false)
-    }
+            setOpen(false);
+            // Lukk tastatur på mobil
+            if (document.activeElement instanceof HTMLElement) {
+                document.activeElement.blur();
+            }
+            // scroll ned til søkene (søkeresultatet)
+            setTimeout(() => {
+                const element = document.getElementById("book-section");
+                if (element){
+                    element.scrollIntoView({behavior : "smooth"});
+                }
+            }, 200);
+            }
 };
 
 
@@ -71,20 +85,21 @@ const executeSearch = (value) => {
           backdropFilter: "blur(5px)",
         }}
       >
-        {/* -------Hamburgermeny- Ikon------ */}
-        <Toolbar>
+        {/* -------Toolbar (header) ----- */}
+        <Toolbar sx={{ height: "80px" }}>
+          {/* Hamburgermeny - ikon */}
           <IconButton
             color="inherit"
             edge="start"
             onClick={() => setOpen(true)}
             sx={{ mr: 2, color: "white" }} //tvinger den til å være hvit, pga mørkt bilde.
           >
-            <MenuIcon />
+            <MenuIcon sx={{ fontSize: "2rem" }} />
           </IconButton>
 
           {/* -------Logo: GUTENDEX------------- */}
           <Typography
-            variant="h6"
+            variant="h5"
             component={Link}
             to="/"
             sx={{
@@ -101,7 +116,9 @@ const executeSearch = (value) => {
           {/* -------------SØKEFELTET------------ */}
           <Search>
             <InputBase
-              placeholder="Søk..."
+              placeholder={
+                isMobile ? "Søk..." : "Søk i biblioteket..."
+              }
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && executeSearch(searchQuery)}
@@ -110,14 +127,18 @@ const executeSearch = (value) => {
                 ml: 2,
                 width: { xs: "120px", sm: "200px" },
                 fontSize: "0.9rem",
+                "& .MuiInputBase-input::placeholder": {
+                  color: "rgba(255, 255, 255, 0.7)",
+                  opacity: 1,
+                },
               }}
             />
 
-            {/* -------knapp med ikon og teskt------- */}
+            {/* -------knappforstørrelsesglass-ikon og "søk"-tekst------- */}
             <Button
               onClick={() => executeSearch(searchQuery)}
               variant="contained"
-              size="small"
+              size="medium"
               startIcon={<SearchIcon />}
               sx={{
                 ml: 1,
@@ -198,7 +219,7 @@ const executeSearch = (value) => {
                     component={Link}
                     to={text === "HJEM" ? "/" : "/favorites"}
                     onClick={() => setOpen(false)}
-                    sx={{ py: 2 }}
+                    sx={{ py: 0.5 }}
                   >
                     <ListItemText
                       primary={text}

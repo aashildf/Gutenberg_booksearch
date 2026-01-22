@@ -87,7 +87,7 @@ if (onFavoriteToggle){
               WebkitBoxOrient: "vertical",
               overflow: "hidden",
               height: "2.5em", // Låser høyden slik at kortene blir like brede
-              lineHeight: "1.25em"
+              lineHeight: "1.25em",
             }}
           >
             {book.title}
@@ -108,13 +108,15 @@ if (onFavoriteToggle){
           </Typography>
         </CardContent>
 
-        {/* knapper */}
+        {/* ------KNAPPER------ */}
         <CardActions sx={{ justifyContent: "space-between", px: 2, pb: 2 }}>
           <Button
             size="small"
             variant="contained"
+            color="primary"
             component={Link}
             to={`/book/${book.id}`}
+            sx={{ flex: 1, height: "40px", fontWeight: "bold" }}
           >
             Detaljer
           </Button>
@@ -122,11 +124,17 @@ if (onFavoriteToggle){
           <Button
             size="small"
             variant={isFavorite ? "contained" : "outlined"}
-            color="secondary"
+            color="primary"
             startIcon={isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
             onClick={toggleFavorite}
+            sx={{
+              flex: 1,
+              height: "40px",
+              fontWeight: "bold",
+              whiteSpace: "nowrap",
+            }}
           >
-            {isFavorite ? "Fjern fra favoritt" : "Legg til i favoritt"}
+            {isFavorite ? " " : "Favoritt"}
           </Button>
         </CardActions>
       </Card>
