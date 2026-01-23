@@ -34,7 +34,7 @@ const Home = () => {
     // -------------HERO-SEKSJON---------------
 
 // ------Hero-Bildet---------
-    const heroImageUrl = "/Gutenberg_booksearch/images/hero4.jpg";
+    const heroImageUrl = "public/images/hero4.jpg";
     return (
       <Box>
         {/* Hero-seksjonen*/}
