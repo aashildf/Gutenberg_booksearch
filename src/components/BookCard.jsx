@@ -1,5 +1,11 @@
 import React, { useState }from 'react';
-import { Card, CardContent, CardMedia, Typography, CardActions, Button, Box } from '@mui/material';
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
+import CardActions from "@mui/material/CardActions";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 import { Link } from 'react-router-dom';    
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';

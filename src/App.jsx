@@ -1,7 +1,10 @@
 import React, {useState, useEffect} from "react";
 import "./App.css";
 import { Routes, Route, useLocation } from "react-router-dom";
-import { Box, CssBaseline, Fab, Zoom } from "@mui/material";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import Fab from "@mui/material/Fab";
+import Zoom from "@mui/material/Zoom";
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 // Import av sider og komponenter
@@ -56,7 +59,10 @@ const ScrollToTopOnNavigation = () => {
         flexDirection: "column",
       }}
     >
-      <ScrollToTopOnNavigation/> 
+      <CssBaseline />
+      {/* fjerner uønskede marginer som nettlesere legger til automatisk, og sørger for at Material UI-komponentene ser like ut i Chrome, Safari og på mobil. Setter også riktig bakgrunnsfarge og font på hele siden. */}
+
+      <ScrollToTopOnNavigation />
       {/* går til toppen ved alle sidebytter*/}
 
       {/* Navbar ligger utenfor Routes, så den vises alltid */}

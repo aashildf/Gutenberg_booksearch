@@ -1,19 +1,17 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import {
-  Container,
-  Typography,
-  Box,
-  CircularProgress,
-  Paper,
-  Grid,
-  Button,
-  IconButton,
-  Chip,
-  Stack,
-  Divider,
-} from "@mui/material";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
+import Divider from "@mui/material/Divider";
 import DownloadIcon from "@mui/icons-material/Download";
 import LanguageIcon from "@mui/icons-material/Language";
 import FavoriteIcon from "@mui/icons-material/Favorite";

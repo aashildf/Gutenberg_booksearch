@@ -2,7 +2,12 @@ import React from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import {useQuery} from '@tanstack/react-query';
 import {fetchBooks} from '../api.js';
-import {Grid, Container, CircularProgress, Button, Typography, Box} from "@mui/material";
+import Grid from "@mui/material/Grid";
+import Container from "@mui/material/Container";
+import CircularProgress from "@mui/material/CircularProgress";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 import BookCard from '../components/BookCard.jsx';
 
 const Category = () => {
