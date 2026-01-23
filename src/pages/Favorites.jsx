@@ -4,6 +4,8 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import BookCard from "../components/BookCard.jsx";
+import Divider from "@mui/material/Divider";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 
     // Henter favorittbøker fra localStorage
@@ -21,20 +23,50 @@ const refreshFavorites = () => {
 
     return (
       <Container maxWidth="xl" sx={{ py: 4 }}>
-        <Typography
-          variant="h2"
-          sx={{
-            fontWeight: 900,
-            mb: 4,
-            mt: 5,
-            fontFamily: '"Playfair Display", serif',
-            color:"primary",
-            textAlign:"center",
-            fontSize:{xs:"2rem", md: "4rem"}
-          }}
-        >
-          Mine favoritter
-        </Typography>
+        {/* ---Overskrift-seksjon---- */}
+
+        {/* Gult hjerte */}
+        <Box sx={{ mt: 5, mb: 6, textAlign: "center" }}>
+          <Box sx={{ mb: 0.5 }}>
+            <FavoriteIcon
+              sx={{
+                color: "secondary.main",
+                fontSize: "1rem",
+                opacity: 0.9,
+              }}
+            />
+          </Box>
+
+          {/* // Overksrift: Favoritter */}
+          <Typography
+            variant="h2"
+            sx={{
+              fontWeight: 500,
+              mb: 2,
+              mt: 2,
+              letterSpacing: "3px",
+              fontFamily: '"Times New Roman", Times, serif',
+              color: "primary",
+              textAlign: "center",
+              lineHeight: 1.2,
+              fontSize: { xs: "2.8rem", md: "3.4em" },
+            }}
+          >
+            Mine favoritter
+          </Typography>
+
+          {/* Delelinje */}
+          <Divider
+            sx={{
+              width: "70px",
+              height: "2px",
+              bgcolor: "secondary.main",
+              margin: "0 auto",
+              borderRadius: "2px",
+              mb: 2,
+            }}
+          />
+        </Box>
 
         {favorites.length === 0 ? (
           <Box sx={{ mt: 4, textAlign: "center" }}>

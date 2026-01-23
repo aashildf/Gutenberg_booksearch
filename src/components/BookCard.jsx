@@ -91,7 +91,7 @@ if (onFavoriteToggle){
               maxHeight: "100%",
               maxWidth: "100%",
               width: "auto",
-              height:"auto",
+              height: "auto",
               objectFit: "contain",
               bgcolor: "#f5f5f5",
               //   p: 1,
@@ -108,6 +108,7 @@ if (onFavoriteToggle){
             alignItems: "center",
           }}
         >
+          {/* ---Bok-tittel--- */}
           <Typography
             variant="h6"
             sx={{
@@ -130,6 +131,7 @@ if (onFavoriteToggle){
             {book.title}
           </Typography>
 
+          {/* ---Forfatter--- */}
           <Typography
             variant="body2"
             color="text.secondary"
@@ -151,6 +153,7 @@ if (onFavoriteToggle){
 
         {/* ------KNAPPER------ */}
         <CardActions sx={{ justifyContent: "space-between", px: 2, pb: 2 }}>
+          {/* ---Detaljer-knappen */}
           <Button
             size="small"
             variant="contained"
@@ -162,6 +165,7 @@ if (onFavoriteToggle){
             Detaljer
           </Button>
 
+          {/* ---Favoritter-knappen--- */}
           <Button
             size="small"
             variant={isFavorite ? "contained" : "outlined"}

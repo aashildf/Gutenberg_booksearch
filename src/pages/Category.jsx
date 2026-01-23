@@ -79,7 +79,7 @@ return (
         sx={{
           fontFamily: '"Times New Roman", Times, serif',
           fontWeight: 500,
-          color: "#1C1A17", // Den mørke fargen fra menyen
+          color: "primary",
           fontSize: { xs: "3rem", md: "3.4em" },
           textTransform: "capitalize",
           textAlign: "center",
@@ -106,7 +106,7 @@ return (
         }}
       >
         {descriptions[displayTitle.toLowerCase()] ||
-          "Utforsk vår nøye utvalgte samling av klassisk litteratur."}
+          "Utforsk vår nøye utvalgte samling av klassisk litteratur"}
       </Typography>
 
       {/* ---DEKORLINE--- */}

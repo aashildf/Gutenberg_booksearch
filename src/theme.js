@@ -8,7 +8,8 @@ const theme = createTheme({
       paper: "#FFFFFF", //helt hvit
     },
     primary: {
-      main: "rgba(235, 205, 205, 0.7)", //beige
+      main: "#bca06e",
+      //   main: "rgba(235, 205, 205, 0.7)",
     },
     secondary: {
       main: "#B38F4D", // Gull
@@ -19,22 +20,22 @@ const theme = createTheme({
   },
   //FONTER
   typography: {
-    fontFamily: '"Playfair Display", "Lato", serif',
+    fontFamily: '"Times New Roman", Times, serif',
     //Perfect fifth Skala (Base 16px)
     h1: {
-      fontFamily: '"Playfair Display", serif',
+      fontFamily: '"Times New Roman", Times, serif',
       fontWeight: 900,
       fontSize: "7.6rem",
       lineHeight: 1.1,
     },
     h2: {
-      fontFamily: '"Playfair Display", serif',
+      fontFamily: '"Times New Roman", Times, serif',
       fontWeight: 700,
       fontSize: "5rem",
       lineHeight: 1.2,
     },
     h3: {
-      fontFamily: '"Playfair Display", serif',
+      fontFamily: '"Times New Roman", Times, serif',
       fontWeight: 700,
       fontSize: "3.4rem",
     },

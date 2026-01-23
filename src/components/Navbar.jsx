@@ -20,13 +20,14 @@ import InputBase from "@mui/material/InputBase";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
-import MenuIcon from '@mui/icons-material/Menu';
-import { Link, useNavigate } from 'react-router-dom';    
-import SearchIcon from '@mui/icons-material/Search';
 import {styled, alpha} from '@mui/material/styles';
-import CloseIcon from "@mui/icons-material/Close";
 import { useMediaQuery } from "@mui/material";
+// Ikoner
+import MenuIcon from '@mui/icons-material/Menu';
+import SearchIcon from '@mui/icons-material/Search';
+import CloseIcon from "@mui/icons-material/Close";
 
+import { Link, useNavigate } from 'react-router-dom';    
 
 
 // ------DATA - KATEGORILISTE: med tilhørende bilder for hover-effekt
@@ -49,7 +50,7 @@ const categories = [
 //Styled komponent for søkefeltet
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
-  borderRadius: "8px",
+  borderRadius: "3px",
   backgroundColor: alpha(theme.palette.common.white, 0.2),
   "&:hover": { backgroundColor: alpha(theme.palette.common.white, 0.25) },
   width: "auto",
@@ -57,6 +58,7 @@ const Search = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   overflow: "hidden",
+  border: "1px solid rgba(255, 255, 255, 0.1)",
 }));
 
 // Om menyen er åpen, og hvilket bilde som vises ved hover
@@ -129,7 +131,7 @@ const executeSearch = (value) => {
           <Search>
             <InputBase
               placeholder={
-                isMobile ? "Søk..." : "Søk i biblioteket..."
+                isMobile ? "Søk..." : "Søk..."
               }
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
