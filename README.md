@@ -1,4 +1,43 @@
-# React + Vite
+
+GUTENBERG BOOKSEARCH – Klassisk Litteraturutforsker
+
+<img width="1000" height="auto" alt="Skjermbilde av Gutendberg Booksearch searvh-panel siden" src="https://github.com/user-attachments/assets/8b1ea013-5238-4301-96bc-7f9d81e0ab4d" />
+<img width="1000" height="auto" alt="Skjermbilde av Gutendberg Booksearch" src="https://github.com/user-attachments/assets/85b1ea81-49bb-4581-b1e2-8e71a41317c7" />
+
+
+
+En moderne web-applikasjon for å utforske, søke og lagre klassisk litteratur fra Project Gutenberg. Appen er bygget med fokus på et klassisk, elegant design kombinert med moderne funksjonalitet.
+
+Funksjoner
+Dynamisk bibliotek: Henter tusenvis av bøker i sanntid via Gutendex API.
+
+Avansert søk: Søk etter titler eller forfattere direkte fra navigasjonslinjen.
+
+Kategorisering: Utforsk bøker basert på sjangre som Fiction, Mystery, Philosophy, og mer.
+
+Favorittsystem: Lagre dine favorittbøker lokalt (localStorage) slik at de er tilgjengelige neste gang du besøker siden.
+
+Responsivt design: Fullt optimalisert for både mobil, nettbrett og desktop.
+
+UI: Bruker "Playfair Display" og "Times New Roman" for å gi en følelse av et klassisk bibliotek.
+
+Teknologier
+React 18 – Frontend-rammeverk.
+
+Material UI (MUI) – Komponentbibliotek for styling og layout.
+
+TanStack Query (React Query) – For effektiv henting og caching av data.
+
+React Router – Håndtering av navigasjon og URL-parametere.
+
+Gutendex API – Datakilde for bøkene.
+
+
+
+
+
+
++ Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
